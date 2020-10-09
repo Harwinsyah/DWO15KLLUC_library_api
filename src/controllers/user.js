@@ -22,12 +22,12 @@ exports.register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bycript.hash(password, 10);
+    const encryptPassword = await bycript.hash(password, 10);
 
     const user = await User.create({
       fullName,
       email,
-      password: hashedPassword,
+      password: encryptPassword,
       gender,
       phone,
       address,
