@@ -112,11 +112,13 @@ exports.login = async (req, res) => {
 
 exports.index = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: { exclude: ["gender", "role", "createdAt", "updatedAt"] },
+    });
 
     res.send({
       message: "Response Success",
-      data: { user },
+      data: { users },
     });
   } catch (err) {
     console.log(err);
@@ -165,6 +167,9 @@ exports.delete = async (req, res) => {
 
     res.send({
       message: `Delete Success!! User with id ${id} has been deleted`,
+      data: {
+        id,
+      },
     });
   } catch (err) {
     console.log(err);
