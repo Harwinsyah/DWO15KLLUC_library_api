@@ -46,10 +46,14 @@ exports.view = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const category = await Category.create(req.body);
+    const newCategory = await Category.findOne({
+      where: { id: category.id },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
     res.send({
       message: "Response Success",
       data: {
-        category,
+        newCategory,
       },
     });
   } catch (err) {

@@ -2,6 +2,7 @@ const { User } = require("../../models");
 
 const bycript = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const joi = require("@hapi/joi");
 
 const jwtKey = "libraryToken2020";
 
@@ -61,6 +62,21 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    const schema = joi.object({
+      email: joi.string().email().min(10).required(),
+      password: joi.string().min(8).required(),
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).send({
+        error: {
+          message: error.details[0].message,
+        },
+      });
+    }
 
     const user = await User.findOne({
       where: {

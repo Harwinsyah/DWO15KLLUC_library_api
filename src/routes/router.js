@@ -2,6 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
+const { authenticated: auth } = require("../middleware/auth");
+
 const {
   register,
   login,
@@ -29,9 +31,9 @@ router.delete("/user/:id", deleteUser);
 
 router.get("/categories", indexCategory);
 router.get("/category/:id", viewCategory);
-router.post("/category", createCategory);
+router.post("/category", auth, createCategory);
 router.post("/category/:id", editCategory);
-router.delete("/category/:id", deleteCategory);
+router.delete("/category/:id", auth, deleteCategory);
 
 router.get("/books", indexBook);
 
